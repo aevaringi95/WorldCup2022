@@ -1,0 +1,87 @@
+---
+title: "Initial Data exploration"
+author: "Aevar Johannesson"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      message = FALSE)
+```
+
+
+```{r,include=FALSE}
+# Load packages and libraries
+library(ggplot2)
+library(tidyverse)
+library(gtable)
+library(grid)
+library(gridExtra)
+library(scales)
+library(glmnet)
+theme_set(theme_bw())
+```
+
+
+```{r}
+# Read in the data from Kaggle
+data <- read.csv("international_matches.csv")
+schedule <- read.csv("matchs-schudule.csv",sep = ";")
+Teams <- read.csv("Qatar2022-teams.csv",sep=";")
+```
+
+
+# Information on data
+
+
+The data includes games from 08-08-1993 to 14-06-2022.
+
+date: Date of the game
+home_team: Name of home_team
+away_team: Name of away_team
+home_team_continent: Continent of home team
+away_team_continent: Continent of away team
+home_team_fifa_rank: Rank of home team
+away_team_fifa_rank: Rank of away team
+home_team_total_fifa_points: Total Fifa points for the home team
+away_team_total_fifa_points: Total Fifa points for the away team
+home_team_score: Goals for the home team
+away_team_score: Goals for the away team
+tournament: What tournament
+city: In what city it was played
+country: In what country the game was played
+Neutral_location: Neutral location or not?
+Shoot_out: Was it a shoot_out or not?
+home_team_result: Match result of the home team, including penalty-shootouts
+
+```{r}
+# Only look at data after 2010
+data <- data %>%
+  filter(date >= '2010-01-01')
+```
+
+
+```{r}
+# Change the name of Korea and Iran to match the game schedule
+data <- data %>%
+  mutate(home_team = case_when(
+    home_team == 'Korea Republic' ~ 'South Korea',
+    home_team == 'IR Iran' ~ 'Iran',
+    1 == 1 ~ home_team
+  ),
+    away_team = case_when(
+    away_team == 'Korea Republic' ~ 'South Korea',
+    away_team == 'IR Iran' ~ 'Iran',
+    1 == 1 ~ away_team
+  ))
+
+
+```
+
+
+
+
+
+
